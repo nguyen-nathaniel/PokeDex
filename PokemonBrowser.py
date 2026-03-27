@@ -98,6 +98,8 @@ class TrackerBlocker(QWebEngineUrlRequestInterceptor):
         "criteo.com",
         "taboola.com",
         "outbrain.com",
+        "celtra.com",
+        "quantserve.com"
     }
 
     def interceptRequest(self, info: QWebEngineUrlRequestInfo) -> None:
