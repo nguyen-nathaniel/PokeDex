@@ -4,6 +4,7 @@ from urllib.parse import quote
 
 import requests
 from PyQt6.QtCore import Qt, QUrl
+from PyQt6.QtGui import QKeySequence, QShortcut
 from PyQt6.QtWebEngineCore import (
     QWebEnginePage,
     QWebEngineProfile,
@@ -146,6 +147,7 @@ class PokemonBrowser(QWidget):
 
         self.tabs.addTab(self.bulbapedia_view, "Bulbapedia")
         self.tabs.addTab(self.smogon_view, "Smogon")
+        self.setup_shortcuts()
 
         # Status text
         self.status_label = QLabel("Ready.")
@@ -178,6 +180,25 @@ class PokemonBrowser(QWidget):
         completer.setFilterMode(Qt.MatchFlag.MatchStartsWith)
         completer.setCompletionMode(QCompleter.CompletionMode.PopupCompletion)
         self.search_input.setCompleter(completer)
+
+    def setup_shortcuts(self) -> None:
+
+
+        self.bulbapedia_shortcut = QShortcut(QKeySequence("Ctrl+1"), self)
+        self.bulbapedia_shortcut.setContext(Qt.ShortcutContext.ApplicationShortcut)
+        self.bulbapedia_shortcut.activated.connect(self.go_to_bulbapedia_tab)
+
+
+        self.bulbapedia_shortcut_mac = QShortcut(QKeySequence("Meta+1"), self)
+        self.bulbapedia_shortcut_mac.setContext(Qt.ShortcutContext.ApplicationShortcut)
+        self.bulbapedia_shortcut_mac.activated.connect(self.go_to_bulbapedia_tab)
+
+
+    def go_to_bulbapedia_tab(self) -> None:
+        if self.tabs.currentIndex() == 0:
+            self.tabs.setCurrentIndex(1)
+        else:
+            self.tabs.setCurrentIndex(0)
 
     def handle_search(self) -> None:
         raw = self.search_input.text()
